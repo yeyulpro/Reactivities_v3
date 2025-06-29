@@ -1,15 +1,18 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState } from "react";
+import axios from 'axios';
 
 
 function App() {
   const [activities, setActivities] = useState<Activity[]>([]);
   useEffect(() => {
-     fetch("https://localhost:5001/api/activities")
-     .then(response => response.json())
-     .then((data) =>  {
-      console.log("My data is "+data);
-      setActivities(data)
-     })
+       axios
+      .get<Activity[]>("https://localhost:5001/api/activities")
+      .then(response => {
+        console.log("📦 Data received:", response.data);
+        setActivities(response.data);
+      })
+      .catch(error => console.log("❌ error occurs:", error));
+      return ()=>{}
   }, [])
 
   return (
