@@ -9,6 +9,7 @@ namespace API
     {
         public static async Task Main(string[] args)
         {
+            var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
@@ -19,31 +20,42 @@ namespace API
             {
                 options.UseSqlite(builder.Configuration.GetConnectionString("DefaultDbConnection"));
             });
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy(name: MyAllowSpecificOrigins,
+                                  policy =>
+                                  {
+                                      policy.WithOrigins("http://localhost:3001").AllowAnyHeader().AllowAnyMethod(); 
+                                  });
+            });
 
 
 
-         
             var app = builder.Build();
 
-			// Configure the HTTP request pipeline. middleware
-
-			app.UseRouting();
+            // Configure the HTTP request pipeline. middleware
 
 
-			app.MapControllers();
 
-            using var scope =app.Services.CreateScope();
+
+
+            app.UseRouting();
+            app.UseCors(MyAllowSpecificOrigins);
+            app.UseAuthorization();
+            app.MapControllers();
+            using var scope = app.Services.CreateScope();
             var services = scope.ServiceProvider;
 
             try
             {
-                var context =services.GetRequiredService<AppDbContext>();
+                var context = services.GetRequiredService<AppDbContext>();
                 await context.Database.MigrateAsync();
                 await DbInitializer.SeeData(context);
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 var logger = services.GetRequiredService<ILogger<Program>>();
-                logger.LogError(ex,"Error Occurs");
+                logger.LogError(ex, "Error Occurs");
             }
 
             app.Run();
