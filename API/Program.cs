@@ -1,6 +1,11 @@
 
+using Application.Activities.Queries;
+using Application.Core;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Persistence;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace API
@@ -28,10 +33,14 @@ namespace API
                                       policy.WithOrigins("http://localhost:3001").AllowAnyHeader().AllowAnyMethod(); 
                                   });
             });
+			builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<GetActivityList.QueryHandler>());
+            builder.Services.AddAutoMapper(typeof(AutoMapping).Assembly);
+
+          
 
 
 
-            var app = builder.Build();
+			var app = builder.Build();
 
             // Configure the HTTP request pipeline. middleware
 
