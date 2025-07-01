@@ -19,8 +19,7 @@ namespace Application.Activities.Commands
 		{
 			public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
 			{
-				var activity = await context.Activities.FindAsync(request.Id);
-				if (activity == null) throw new Exception("Activity not Found.");
+				var activity = await context.Activities.FindAsync(request.Id, cancellationToken) ?? throw new Exception("Activity not Found.");				
 				 context.Activities.Remove(activity);
 				await context.SaveChangesAsync(cancellationToken);
 				return Unit.Value;
