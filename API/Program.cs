@@ -30,7 +30,7 @@ namespace API
                 options.AddPolicy(name: MyAllowSpecificOrigins,
                                   policy =>
                                   {
-                                      policy.WithOrigins("http://localhost:3001").AllowAnyHeader().AllowAnyMethod(); 
+                                      policy.WithOrigins("https://localhost:3001").AllowAnyHeader().AllowAnyMethod(); 
                                   });
             });
 			builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<GetActivityList.QueryHandler>());
