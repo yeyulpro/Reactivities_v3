@@ -2,11 +2,11 @@ import { List, ListItem } from '@mui/material'
 import ActivityCard from './ActivityCard'
 type Props = {
     activities: Activity[]
-    handleSelectedActivity: (id:string)=>void
-    handleDeleteActivity:(id:string)=>void
-   
+    handleSelectedActivity: (id: string) => void
+
+
 }
-export default function ActivityList({ activities, handleSelectedActivity,handleDeleteActivity }: Props) {
+export default function ActivityList({ activities, handleSelectedActivity }: Props) {
     return (
 
         <List >
@@ -14,17 +14,17 @@ export default function ActivityList({ activities, handleSelectedActivity,handle
                 activities.map((activity) => (
                     <ListItem key={activity.id}
                     >
-                        <ActivityCard 
+                        <ActivityCard
                             activity={activity}
                             handleSelectedActivity={handleSelectedActivity}
-                            handleDeleteActivity={handleDeleteActivity}
-                            />
+
+                        />
                     </ListItem>
 
 
                 ))
             }
-   
+
         </List>
 
 
