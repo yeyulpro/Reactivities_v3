@@ -1,35 +1,17 @@
-import { List, ListItem } from '@mui/material'
-import ActivityCard from './ActivityCard'
-type Props = {
-    activities: Activity[]
-    handleSelectedActivity: (id: string) => void
+import { List, ListItem, Typography } from "@mui/material";
+import ActivityCard from "./ActivityCard";
+import { useActivities } from "../../lib/hooks/useActivities";
 
-
-}
-export default function ActivityList({ activities, handleSelectedActivity }: Props) {
-    return (
-
-        <List >
-            {
-                activities.map((activity) => (
-                    <ListItem key={activity.id}
-                    >
-                        <ActivityCard
-                            activity={activity}
-                            handleSelectedActivity={handleSelectedActivity}
-
-                        />
-                    </ListItem>
-
-
-                ))
-            }
-
-        </List>
-
-
-
-
-
-    )
+export default function ActivityList() {
+  const { activities, isPending } = useActivities();
+  if (!activities || isPending) return <Typography>Loading...</Typography>;
+  return (
+    <List>
+      {activities.map((activity) => (
+        <ListItem key={activity.id}>
+          <ActivityCard activity={activity}/>
+        </ListItem>
+      ))}
+    </List>
+  );
 }

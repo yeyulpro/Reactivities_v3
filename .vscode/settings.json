@@ -1,5 +1,7 @@
 {
     "cSpell.words": [
         "Cssbaseline"
-    ]
+    ],
+    "prettier.jsxSingleQuote": true,
+    "prettier.withNodeModules": true
 }

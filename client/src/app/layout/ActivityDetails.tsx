@@ -1,20 +1,18 @@
 import { Button, Card, CardActions, CardContent, CardMedia, Typography } from '@mui/material'
 import { useActivities } from '../../lib/hooks/useActivities'
+import { Link, useNavigate, useParams } from 'react-router';
 
 
-type Props = {
-    selectedActivity: Activity
-    handleCancelSelectedActivity: () => void
-    handleOpenForm: (id: string) => void
 
-}
+export default function ActivityDetails() {
+    const navigate = useNavigate();
+    const { id } = useParams();
+    const { activity, isLoadingActivity } = useActivities(id);
 
-export default function ActivityDetails({ selectedActivity, handleCancelSelectedActivity, handleOpenForm }: Props) {
+    if (isLoadingActivity)  <Typography>Loading ...</Typography>
 
-    const { activities } = useActivities();
-    const activity = activities?.find(x => x.id === selectedActivity.id)
 
-    if (!activity) return <Typography>Loading</Typography>
+    if (!activity) return <Typography>Activity not Found!~</Typography>
     return (
         <Card sx={{ borderRadius: 3, mt: "16px" }}>
             <CardMedia
@@ -24,13 +22,13 @@ export default function ActivityDetails({ selectedActivity, handleCancelSelected
                 title="green iguana" />
             <CardContent>
                 <Typography variant="h3" color="initial">{activity.title}</Typography>
-                <Typography variant="subtitle1" color="initial">{activity.date}v</Typography>
-                <Typography variant="body1" color="initial">{activity.description}v</Typography>
+                <Typography variant="subtitle1" color="initial">{activity.date}</Typography>
+                <Typography variant="body1" color="initial">{activity.description}</Typography>
             </CardContent>
 
             <CardActions>
-                <Button onClick={() => handleOpenForm(activity.id)} >Edit</Button>
-                <Button onClick={handleCancelSelectedActivity}>Cancel</Button>
+                <Button component={Link} to={`/manage/${activity.id}`} >Edit</Button>
+                <Button onClick={() => { navigate('/activities') }}>Cancel</Button>
             </CardActions>
         </Card>
     )
