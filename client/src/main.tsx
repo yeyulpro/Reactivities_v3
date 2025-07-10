@@ -12,6 +12,7 @@ import { RouterProvider } from "react-router";
 import { router } from "./app/layout/route/Routes.tsx";
 import ThemeProvider from "@mui/material/styles/ThemeProvider";
 import { createTheme } from "@mui/material";
+import { store, StoreContext } from "./lib/stores/store.ts";
 const theme = createTheme({
   palette: {
     background: {
@@ -23,11 +24,13 @@ const theme = createTheme({
 const queryClient = new QueryClient();
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <ThemeProvider theme={theme}>
-      <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} />
-        <ReactQueryDevtools initialIsOpen={false} />
-      </QueryClientProvider>
-    </ThemeProvider>
+    <StoreContext.Provider value={store}>
+      <ThemeProvider theme={theme}>
+        <QueryClientProvider client={queryClient}>
+          <RouterProvider router={router} />
+          <ReactQueryDevtools initialIsOpen={false} />
+        </QueryClientProvider>
+      </ThemeProvider>
+    </StoreContext.Provider>
   </StrictMode>
 );

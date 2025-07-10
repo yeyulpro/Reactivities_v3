@@ -2,11 +2,9 @@ import {
   AppBar,
   Box,
   Button,
-
   Toolbar,
   Typography,
   Container,
-
   MenuItem,
 } from "@mui/material";
 
@@ -33,12 +31,14 @@ export default function NavBar() {
                   gap: 3,
                 }}
               >
-                
-                <MenuItemLink to={'/activities'} >
+                <MenuItemLink to={"/activities"}>
                   Activities
                 </MenuItemLink>
-                <MenuItemLink to={'/createactivity'} >
+                <MenuItemLink to={"/createactivity"}>
                   Create Activity
+                </MenuItemLink>
+                <MenuItemLink to={"/Counter"}>
+                  Counter
                 </MenuItemLink>
               </Box>
               <Button onClick={() => { }} sx={{ color: "white" }}>
