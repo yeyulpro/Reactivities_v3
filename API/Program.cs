@@ -1,12 +1,15 @@
-
+﻿
 using Application.Activities.Queries;
 using Application.Core;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using FluentValidation;
 using Persistence;
 using System.Reflection;
 using System.Threading.Tasks;
+using Application.Activities.Validator;
+using API.Middleware;
 
 namespace API
 {
@@ -33,8 +36,17 @@ namespace API
                                       policy.WithOrigins("https://localhost:3001").AllowAnyHeader().AllowAnyMethod(); 
                                   });
             });
-			builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<GetActivityList.QueryHandler>());
+            builder.Services.AddMediatR(x =>
+            {
+                x.RegisterServicesFromAssemblyContaining<GetActivityList.QueryHandler>();
+                x.AddOpenBehavior(typeof(ValidationBehavior<,>)); // typeof에서는 type의 이름을 넣을 수 없다.
+                
+            });
+
             builder.Services.AddAutoMapper(typeof(AutoMapping).Assembly);
+            builder.Services.AddValidatorsFromAssemblyContaining<CreateActivityValidator>();
+            builder.Services.AddTransient<ExceptionMiddleware>();
+            
 
           
 
@@ -44,7 +56,7 @@ namespace API
 
             // Configure the HTTP request pipeline. middleware
 
-
+            app.UseMiddleware<ExceptionMiddleware>();
 
 
 
