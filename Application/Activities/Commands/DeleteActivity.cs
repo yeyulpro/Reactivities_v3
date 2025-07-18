@@ -21,10 +21,10 @@ namespace Application.Activities.Commands
 			public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
 			{
 				var activity = await context.Activities.FindAsync(request.Id, cancellationToken);
-				if (activity == null) return Result<Unit>.Failure("The Activity(for deletion) not Found.", 400);
+				if (activity == null) return Result<Unit>.Failure("The Activity(for deletion) not Found.", 404);
 				context.Remove(activity);
 				var result = await context.SaveChangesAsync(cancellationToken) > 0;
-				if (!result) return Result<Unit>.Failure("Deletion not successful.", 404);
+				if (!result) return Result<Unit>.Failure("Deletion not successful.", 400);
 				 return Result<Unit>.Success(Unit.Value);
 
 			}

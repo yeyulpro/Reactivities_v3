@@ -13,13 +13,14 @@ import {
 import { Link } from "react-router";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import PlaceIcon from "@mui/icons-material/Place";
-import { format } from 'date-fns';
+import { format, parseISO } from 'date-fns';
 
 type Props = {
     activity: Activity;
 };
 
 export default function ActivityCard({ activity }: Props) {
+    console.log("here is time?!",activity.date)
     const isHost = false;
     const isGoing = false;
     const label = isHost ? "Your are hosting" : "You are going";
@@ -62,7 +63,7 @@ export default function ActivityCard({ activity }: Props) {
                     <Box  display='flex' alignItems='center' flexGrow={0}>
                         <AccessTimeIcon sx={{ mr: 1 }} />
                         <Typography variant='body2' flexGrow={0} sx={{ whiteSpace: 'nowrap' }} >
-                            {format(activity.date, "do MMMM yyyy")}
+                            {	format(parseISO(activity.date), "yyyy-MM-dd HH:mm")}
                         </Typography>
                     </Box>
 

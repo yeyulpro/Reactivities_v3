@@ -10,4 +10,15 @@ export default defineConfig({
   },
   
   plugins: [react(),mkcert()],
+   optimizeDeps: {
+    include: [
+      'date-fns',
+      'date-fns/addDays',
+      'date-fns/startOfDay',
+      'date-fns/endOfMonth',
+      'date-fns/startOfWeek',
+      'date-fns/locale/en-US',
+      'date-fns/_lib/format/longFormatters',
+    ],
+  },
 })

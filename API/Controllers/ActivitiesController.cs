@@ -22,43 +22,31 @@ namespace API.Controllers
 			return await mediator.Send(new GetActivityList.Query());
 		}
 		[HttpGet("{id}")]
-		public async Task<ActionResult<Result<Activity>>> GetActivityDetails(string id)
+		public async Task<ActionResult<Activity>> GetActivityDetails(string id)
 		{
 			
 
-			var result = await mediator.Send(new GetActivityDetails.Query { Id = id });
-			if (!result.IsSuccess && result.Code == 404) return NotFound();
-			if (result.IsSuccess && result.Value != null) return Ok(result.Value);
-			return BadRequest(result.Error);
-			
-			
-			
+			return HandleResult(await mediator.Send(new GetActivityDetails.Query { Id = id }));
+		
 		}
 
 		[HttpPost]
-		public async Task<ActionResult<Result<string>>> CreateActivity(CreateActivityDto activityDto)
+		public async Task<ActionResult<string>> CreateActivity(CreateActivityDto activityDto)
 		{
-		var result =await mediator.Send(new CreateActivity.Command { ActivityDto = activityDto });	
-			if (!result.IsSuccess && result.Code == 404) return NotFound();
-			if (result.IsSuccess && result.Value != null) return Ok(result.Value);
-			return BadRequest(result.Error);
+		return HandleResult(await mediator.Send(new CreateActivity.Command { ActivityDto = activityDto }));	
+			
 		}
 		[HttpPut]
-		public async Task<ActionResult<Result<Activity>>> UpdateActivity(EditActivityDto activity)
+		public async Task<ActionResult<Activity>> UpdateActivity(EditActivityDto activity)
 		{
-			var result =await mediator.Send(new EditActivity.Command { ActivityDto= activity });
-			if (!result.IsSuccess && result.Code == 404) return NotFound();
-			if (result.IsSuccess) return Ok(result.Value);
+			return HandleResult(await mediator.Send(new EditActivity.Command { ActivityDto= activity }));
 			
-			return  BadRequest(result.Error);
 		}
 		[HttpDelete("{id}")]
 		public async Task<ActionResult> DeleteActivity(string id)
 		{
-			var result =await mediator.Send(new DeleteActivity.Command { Id = id });
-			if (!result.IsSuccess && result.Code == 404) return NotFound();
-			if (result.IsSuccess ) return Ok(result.Value);
-			return  BadRequest(result.Error);
+			return HandleResult(await mediator.Send(new DeleteActivity.Command { Id = id }));
+			
 		}
 	}
 }

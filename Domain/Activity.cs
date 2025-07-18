@@ -12,7 +12,7 @@ namespace Domain
 		
 		public string Id { get; set; }=Guid.NewGuid().ToString();
 		public required string Title { get; set; }
-		public DateOnly Date { get; set; }
+		public DateTime Date { get; set; }
 		public required string Description { get; set; }
 		public required string Category { get; set; }
 		public bool isCancelled { get; set; }

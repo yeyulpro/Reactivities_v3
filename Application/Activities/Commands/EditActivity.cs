@@ -26,7 +26,7 @@ namespace Application.Activities.Commands
 				if (activity == null) return Result<Unit>.Failure("The Id you look for is not found.", 404);
 				mapper.Map(request.ActivityDto, activity);
 				var result = await context.SaveChangesAsync(cancellationToken) > 0;
-				if (!result) return Result<Unit>.Failure("Activity is not updated", 404);
+				if (!result) return Result<Unit>.Failure("Activity is not updated", 400);
 				return Result<Unit>.Success(Unit.Value);
 				
 			}

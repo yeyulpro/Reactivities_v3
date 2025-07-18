@@ -40,6 +40,9 @@ export default function NavBar() {
                 <MenuItemLink to={"/Counter"}>
                   Counter
                 </MenuItemLink>
+                <MenuItemLink to={"/errors"}>
+                  Test Errors
+                </MenuItemLink>
               </Box>
               <Button onClick={() => { }} sx={{ color: "white" }}>
                 Create Activity

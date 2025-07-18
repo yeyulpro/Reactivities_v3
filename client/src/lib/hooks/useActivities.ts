@@ -1,10 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { agent } from "../api/agent";
+import type { Activity } from "../types";
 
-
-export const useActivities = (id?:string) => {
+export const useActivities = (id?: string) => {
   const queryClient = useQueryClient();
- 
 
   const { data: activities, isPending } = useQuery<Activity[]>({
     queryKey: ["activities"],
@@ -14,19 +13,18 @@ export const useActivities = (id?:string) => {
     },
   });
 
-  const {data:activity, isLoading: isLoadingActivity}=useQuery<Activity>({
-    queryKey:['activities',id],
-    queryFn: async()=>{
-        const response = await agent.get<Activity>(`/activities/${id}`)
-        return response.data
+  const { data: activity, isLoading: isLoadingActivity } = useQuery<Activity>({
+    queryKey: ["activities", id],
+    queryFn: async () => {
+      const response = await agent.get<Activity>(`/activities/${id}`);
+      return response.data;
     },
-    enabled:!!id
-
-  })
-
+    enabled: !!id,
+  });
+ type UpdateActivityDto = Omit<Activity, "isCancelled">;
 
   const updateActivity = useMutation({
-    mutationFn: async (activity: Activity) => {
+    mutationFn: async (activity: UpdateActivityDto) => {
       await agent.put("/activities", activity);
     },
     onSuccess: async () => {
@@ -35,23 +33,22 @@ export const useActivities = (id?:string) => {
       });
     },
   });
-
+ type CreateActivityDto = Omit<Activity, "id" | "isCancelled">;
   const createActivity = useMutation({
-    mutationFn: async (activity: Activity) => {
-       const response =await agent.post("/activities", activity);
-     return response.data
-      },
+    mutationFn: async (activity: CreateActivityDto) => {
+      const response = await agent.post("/activities", activity);
+      return response.data;
+    },
     onSuccess: async () => {
       await queryClient.invalidateQueries({
         queryKey: ["activities"],
       });
     },
   });
-  
+
   const deleteActivity = useMutation({
     mutationFn: async (id: string) => {
-     await agent.delete(`/activities/${id}`);
-     
+      await agent.delete(`/activities/${id}`);
     },
     onSuccess: async () => {
       await queryClient.invalidateQueries({
@@ -67,6 +64,6 @@ export const useActivities = (id?:string) => {
     createActivity,
     deleteActivity,
     activity,
-    isLoadingActivity
+    isLoadingActivity,
   };
 };

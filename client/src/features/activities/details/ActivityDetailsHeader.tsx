@@ -1,6 +1,7 @@
 import { Badge, Box, Button, Card, CardMedia,  Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import { format } from 'date-fns';
+import type { Activity } from "../../../lib/types";
 
 type Props={
     activity:Activity
@@ -8,6 +9,8 @@ type Props={
 
 
 export default function ActivityDetailsHeader({activity}:Props) {
+    console.log("hey !!activity.date:", activity.date);
+    console.log("to know type@@@",typeof activity.date, activity.date);
     const isCancelled = false;
     const isHost = true;
     const isGoing = true;
@@ -39,11 +42,12 @@ export default function ActivityDetailsHeader({activity}:Props) {
                 alignItems: 'flex-end',
                 background: 'linear-gradient(to top, rgba(0, 0, 0, 1.0), transparent)',
                 boxSizing: 'border-box',
-            }}>
+            }}>     
                 {/* Text Section */}
                 <Box>
                     <Typography variant="h4" sx={{ fontWeight: 'bold' }}>{activity.title}</Typography>
-                    <Typography variant="subtitle1">{format(activity.date,"do MMMM yyyy" )}</Typography>
+                  
+                    <Typography variant="subtitle1">{	format((activity.date), "yyyy-MM-dd")}</Typography>
                     <Typography variant="subtitle2">
                         Hosted by <Link to={`/profiles/username`} style={{ color: 'white', fontWeight: 'bold' }}>Bob</Link>
                     </Typography>
@@ -64,7 +68,7 @@ export default function ActivityDetailsHeader({activity}:Props) {
                                 variant="contained"
                                 color="primary"
                                 component={Link}
-                                to={`/manage/activityId`}
+                                to={`/manage/${activity.id}`}
                                 disabled={isCancelled}
                             >
                                 Manage Event

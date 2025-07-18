@@ -2,7 +2,8 @@ import Place from "@mui/icons-material/Place";
 import { Divider, Grid2, Paper, Typography } from "@mui/material";
 import InfoIcon from '@mui/icons-material/Info';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
-import { format } from 'date-fns';
+import { format,  } from 'date-fns';
+import type { Activity } from "../../../lib/types";
 type Props = {
     activity: Activity
 }
@@ -25,7 +26,7 @@ export default function ActivityDetailsInfo({ activity }: Props) {
                     <CalendarTodayIcon color="info" fontSize="large" />
                 </Grid2>
                 <Grid2 size={11}>
-                    <Typography>{format(activity.date, "do MMMM yyyy")}</Typography>
+                    <Typography>{format((activity.date), "yyyy-MM-dd HH:mm")}</Typography>
                 </Grid2>
             </Grid2>
             <Divider />

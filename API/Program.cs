@@ -32,14 +32,14 @@ namespace API
             {
                 options.AddPolicy(name: MyAllowSpecificOrigins,
                                   policy =>
-                                  {
-                                      policy.WithOrigins("https://localhost:3001").AllowAnyHeader().AllowAnyMethod(); 
+                                  {policy.WithOrigins("https://localhost:3001").AllowAnyHeader().AllowAnyMethod(); 
                                   });
             });
             builder.Services.AddMediatR(x =>
             {
                 x.RegisterServicesFromAssemblyContaining<GetActivityList.QueryHandler>();
-                x.AddOpenBehavior(typeof(ValidationBehavior<,>)); // typeof에서는 type의 이름을 넣을 수 없다.
+                x.AddOpenBehavior(typeof(ValidationBehavior<,>)); // ,
+                //  "typeof 안에 그냥 ValidationBehavior라고 이름만 넣으면 안 된다"는 뜻이고,"반드시 ValidationBehavior<,>처럼 열려 있는 제네릭 타입 형태로 써야 한다"는 뜻입니다.
                 
             });
 
