@@ -1,4 +1,5 @@
 ﻿using Domain;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
 using System;
@@ -9,12 +10,8 @@ using System.Threading.Tasks;
 
 namespace Persistence
 {
-	public class AppDbContext : DbContext
+	public class AppDbContext(DbContextOptions options) : IdentityDbContext<User>(options)
 	{
 		public required DbSet<Activity> Activities { get; set; }
-		public AppDbContext(DbContextOptions<AppDbContext> options):base(options)
-		{
-			
-		}
-	}
+    }
 }

@@ -1,9 +1,11 @@
-﻿using Application.Activities.Commands;
+﻿using System.ComponentModel.DataAnnotations;
+using Application.Activities.Commands;
 using Application.Activities.DTOs;
 using Application.Activities.Queries;
 using Application.Core;
 using Domain;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -16,11 +18,13 @@ namespace API.Controllers
 
 	public class ActivitiesController( IMediator mediator) : BaseApiController
 	{
+		
 		[HttpGet]
 		public async Task<ActionResult<List<Activity>>> GetActivities()
 		{
 			return await mediator.Send(new GetActivityList.Query());
 		}
+		
 		[HttpGet("{id}")]
 		public async Task<ActionResult<Activity>> GetActivityDetails(string id)
 		{

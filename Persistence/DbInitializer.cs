@@ -1,4 +1,5 @@
 ﻿using Domain;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Identity.Client;
 using SQLitePCL;
 using System;
@@ -12,8 +13,33 @@ namespace Persistence
 	public class DbInitializer
 	{
 	
-		public static async Task SeeData(AppDbContext context)
+		public static async Task SeedData(AppDbContext context, UserManager<User> userManager)
 		{
+			if (!userManager.Users.Any())
+			{
+				var users = new List<User>
+				{
+					new (){DisplayName = "Bob", UserName = "bob@test.com", Email="bob@test.com"},
+					new (){DisplayName = "Tom", UserName = "tom@test.com", Email="tom@test.com"},
+					new (){DisplayName = "Jane", UserName = "jane@test.com", Email="jane@test.com"},
+
+				};
+
+				foreach (var user in users)
+				{
+					var result =await userManager.CreateAsync(user, "PasswordW@rd1");
+					if (!result.Succeeded)
+					{
+						foreach (var a in result.Errors)
+						{
+							Console.WriteLine($"error is {a.Description}");
+						}
+					}
+				}
+			}
+
+
+
 			if (context.Activities.Any()) return;
 
 			var activities = new List<Activity>
