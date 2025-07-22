@@ -1,10 +1,11 @@
 import axios from "axios";
 import { toast } from "react-toastify";
-import { router } from "../../app/layout/route/Routes";
+
 import { parseISO } from "date-fns";
 
 export const agent = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
+  withCredentials:true
 });
 
 agent.interceptors.response.use(
@@ -26,7 +27,7 @@ agent.interceptors.response.use(
         toast.error("Unauthorized.");
         break;
       case 404:
-        router.navigate('/notfound')
+        toast.error('Not Found')
         break;
       case 500:
         toast.error("Server error.");

@@ -1,9 +1,13 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { agent } from "../api/agent";
 import type { Activity } from "../types";
+import { useAccount } from "./useAccount";
+import { useLocation } from "react-router";
 
 export const useActivities = (id?: string) => {
+  const location = useLocation();
   const queryClient = useQueryClient();
+  const { currentUser } = useAccount();
 
   const { data: activities, isPending } = useQuery<Activity[]>({
     queryKey: ["activities"],
@@ -11,6 +15,7 @@ export const useActivities = (id?: string) => {
       const response = await agent.get<Activity[]>("/activities");
       return response.data;
     },
+    enabled: !id && location.pathname === "/activities" && !!currentUser,
   });
 
   const { data: activity, isLoading: isLoadingActivity } = useQuery<Activity>({
@@ -19,9 +24,9 @@ export const useActivities = (id?: string) => {
       const response = await agent.get<Activity>(`/activities/${id}`);
       return response.data;
     },
-    enabled: !!id,
+    enabled: !!id && !!currentUser,
   });
- type UpdateActivityDto = Omit<Activity, "isCancelled">;
+  type UpdateActivityDto = Omit<Activity, "isCancelled">;
 
   const updateActivity = useMutation({
     mutationFn: async (activity: UpdateActivityDto) => {
@@ -33,7 +38,7 @@ export const useActivities = (id?: string) => {
       });
     },
   });
- type CreateActivityDto = Omit<Activity, "id" | "isCancelled">;
+  type CreateActivityDto = Omit<Activity, "id" | "isCancelled">;
   const createActivity = useMutation({
     mutationFn: async (activity: CreateActivityDto) => {
       const response = await agent.post("/activities", activity);

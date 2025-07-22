@@ -1,4 +1,12 @@
-export type Activity = {
+type User={
+  id:string,
+  displayName:string,
+  email:string,
+  imageUrl?:string
+}
+
+
+type Activity = {
   id: string;
   title: string;
   date: Date;
@@ -15,7 +23,7 @@ export type UpdateActivityDto = Omit<Activity, "isCancelled">;
 
 
 
-export type LocationlQSuggestion ={
+type LocationlQSuggestion ={
   place_id: string
   osm_id: string
   osm_type: string
@@ -30,7 +38,7 @@ export type LocationlQSuggestion ={
   display_address: string
   address: LocationlQAddress
 }
-export type LocationlQAddress ={
+type LocationlQAddress ={
   name: string
   house_number: string
   road: string

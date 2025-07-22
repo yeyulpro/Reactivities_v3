@@ -21,7 +21,7 @@ namespace API
     {
         public static async Task Main(string[] args)
         {
-            var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+            // var MyAllowSpecificOrigins = "MyAllowSpecificOrigins";
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
@@ -40,9 +40,9 @@ namespace API
             });
             builder.Services.AddCors(options =>
             {
-                options.AddPolicy(name: MyAllowSpecificOrigins,
+                options.AddPolicy( "MyAllowSpecificOrigins",
                                   policy =>
-                                  { policy.WithOrigins("https://localhost:3001").AllowAnyHeader().AllowAnyMethod();
+                                  { policy.AllowCredentials().WithOrigins("https://localhost:3001").AllowAnyHeader().AllowAnyMethod();
                                   });
             });
             builder.Services.AddMediatR(x =>
@@ -71,10 +71,11 @@ namespace API
 
 
             app.UseRouting();
-            app.UseCors(x => x.AllowAnyHeader()
-                            .AllowAnyMethod()
-                            .AllowCredentials()
-                            .WithOrigins("https://localhost:3001"));
+            // app.UseCors(x => x.AllowAnyHeader()
+            //                 .AllowAnyMethod()
+            //                 .AllowCredentials()
+            //                 .WithOrigins("https://localhost:3001"));
+            app.UseCors("MyAllowSpecificOrigins");
 
             app.UseAuthentication();
             app.UseAuthorization();

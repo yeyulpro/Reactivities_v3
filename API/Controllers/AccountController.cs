@@ -36,7 +36,7 @@ namespace API.Controllers
         [HttpGet("user-info")]
         public async Task<ActionResult> GetUserInfo()
         {
-            if (User.Identity != null &&User.Identity.IsAuthenticated == false) return NoContent();
+            if (User.Identity != null &&User.Identity.IsAuthenticated == false) return NoContent();  //User.Identity != null인증 시스템이 작동한다는 뜻이지 방문자가 회원가입했는지 안했는지 문제가 아니다.
             var user = await signInManager.UserManager.GetUserAsync(User);
             if (user == null) return Unauthorized();
             return Ok(new

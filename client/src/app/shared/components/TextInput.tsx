@@ -15,26 +15,12 @@ export default function TextInput<T extends FieldValues>({name, control, label, 
     {...field}
       name={name}
       label={label}
+      value={field.value ?? ""}
       error={!!fieldState.error}
       helperText={fieldState.error?.message}
       variant ="outlined"
-      
+      fullWidth
     />
   );
 }
 
-// export default function TextInput<T extends FieldValues>(props: Props<T> ) {
-//     const {field, fieldState} = useController({...props});
-//   return (
-//     <TextField
-//         {...props}
-//         {...field}
-//         // value={field.value ||" "}
-//         fullWidth
-//         variant ="outlined"
-//         error={!!fieldState.error}
-//         helperText={fieldState.error?.message}
-
-//     />
-//   )
-// }
