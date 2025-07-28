@@ -14,6 +14,9 @@ using Domain;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using Application.Interfaces;
+using Infrastructure.Security;
+
 
 namespace API
 {
@@ -52,14 +55,21 @@ namespace API
                                                                   //  "typeof 안에 그냥 ValidationBehavior라고 이름만 넣으면 안 된다"는 뜻이고,"반드시 ValidationBehavior<,>처럼 열려 있는 제네릭 타입 형태로 써야 한다"는 뜻입니다.
 
             });
-
+            builder.Services.AddScoped<IUserAccessor,UserAccessor>();
             builder.Services.AddAutoMapper(typeof(AutoMapping).Assembly);
             builder.Services.AddValidatorsFromAssemblyContaining<CreateActivityValidator>();
             builder.Services.AddTransient<ExceptionMiddleware>();
             builder.Services.AddIdentityApiEndpoints<User>(options => options.User.RequireUniqueEmail = true).AddRoles<IdentityRole>().AddEntityFrameworkStores<AppDbContext>();
-          
-
-
+            
+            // 권한관련
+            builder.Services.AddAuthorization(opt =>
+            {
+                opt.AddPolicy("IsActivityHost", policy =>
+                {
+                    policy.Requirements.Add(new IsHostRequirement());
+                });
+            });
+            builder.Services.AddTransient<IAuthorizationHandler, IsHostRequirementHandler>();
 
 			var app = builder.Build();
 

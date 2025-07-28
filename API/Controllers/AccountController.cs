@@ -37,7 +37,7 @@ namespace API.Controllers
         public async Task<ActionResult> GetUserInfo()
         {
             if (User.Identity != null &&User.Identity.IsAuthenticated == false) return NoContent();  //User.Identity != null인증 시스템이 작동한다는 뜻이지 방문자가 회원가입했는지 안했는지 문제가 아니다.
-            var user = await signInManager.UserManager.GetUserAsync(User);
+            var user = await signInManager.UserManager.GetUserAsync(User);// User는 HTTP 요청에서 꺼낸 정보,GetUserAsync(User)는 그것을 DB의 사용자와 연결지어주는 역할, ControllerBase.가 자동으로 제공하는 속성.
             if (user == null) return Unauthorized();
             return Ok(new
             {

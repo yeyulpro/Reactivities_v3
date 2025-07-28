@@ -6,7 +6,7 @@ import { Box, Button, Paper, Typography } from "@mui/material";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
 import TextInput from "../../app/shared/components/TextInput";
 
-import { Link, Navigate, Navigate, useLocation, useNavigate } from "react-router";
+import { Link,   useLocation, useNavigate } from "react-router";
 
 export default function LoginForm() {
   const { loginUser } = useAccount();
