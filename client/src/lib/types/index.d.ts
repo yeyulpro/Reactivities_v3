@@ -17,7 +17,20 @@ type Activity = {
   venue: string;
   latitude: number;
   longitude: number;
+  attendees: UserProfile[];
+  isGoing: boolean;
+  isHost:boolean;
+  hostId:string;
+  hostDisplayName:string
 };
+
+type UserProfile={
+  id:string
+  displayName:string;
+  bio?: string
+  imageUrl?:string
+}
+
 export type CreateActivityDto = Omit<Activity, "id" | "isCancelled">;
 export type UpdateActivityDto = Omit<Activity, "isCancelled">;
 

@@ -27,6 +27,6 @@ namespace Application.DTOs;    // this is to return toUI , list  attendees , pro
 	public double Longitude { get; set; }
 
 	//navigation properties
-	public ICollection<UserProfile> Attendees { get; set; } = [];  //will returnnprofile
+	public ICollection<UserProfile> Attendees { get; set; } = [];  //will return  profile
 
     }
