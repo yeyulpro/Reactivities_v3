@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Application.Interfaces;
 using Infrastructure.Security;
+using Infrastructure.Photos;
 
 
 namespace API
@@ -28,7 +29,7 @@ namespace API
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-
+          
             builder.Services.AddControllers(options=>
             {                    
                 var policy = new AuthorizationPolicyBuilder() // tool to set what kind of policy for authentication 
@@ -55,7 +56,9 @@ namespace API
                                                                   //  "typeof 안에 그냥 ValidationBehavior라고 이름만 넣으면 안 된다"는 뜻이고,"반드시 ValidationBehavior<,>처럼 열려 있는 제네릭 타입 형태로 써야 한다"는 뜻입니다.
 
             });
+            builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
             builder.Services.AddScoped<IUserAccessor,UserAccessor>();
+            builder.Services.AddScoped<IPhotoService, PhotoService>();
             builder.Services.AddAutoMapper(typeof(AutoMapping).Assembly);
             builder.Services.AddValidatorsFromAssemblyContaining<CreateActivityValidator>();
             builder.Services.AddTransient<ExceptionMiddleware>();

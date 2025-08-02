@@ -1,6 +1,7 @@
 ﻿using Application.Interfaces;
 using Domain;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Persistence;
 using System;
 using System.Collections.Generic;
@@ -18,12 +19,22 @@ namespace Infrastructure.Security
 //일반 클래스나 서비스에서는 기본적으로 HttpContext에 접근할 수 없습니다.그래서 필요한 게 바로 👉 **IHttpContextAccessor**입니다.
 		public async Task<User> GetUserAsync()
 		{
-			return await dbContext.Users.FindAsync(GetUserId()) ?? throw new UnauthorizedAccessException("No user is logged in.");
+			return await dbContext.Users.FindAsync(GetUserId())  // 이 상태에서는 lazy loading이 일어나지 않는다.,navigation property이어서 자동 로드되지 않는다...
+			 ?? throw new UnauthorizedAccessException("No user is logged in.");
 		}
 
 		public string GetUserId()
 		{
 			return httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier) ?? throw new Exception("No user found");
 		}
-	}
+
+		public async Task<User> GetUserWithPhotosAsync()
+		{
+			var userId = GetUserId();
+			return await dbContext.Users  // 이 상태에서는 lazy loading이 일어나지 않는다.,navigation property이어서 자동 로드되지 않는다...
+				.Include(x => x.Photos)
+				.FirstOrDefaultAsync(x=>x.Id == userId)
+			 ?? throw new UnauthorizedAccessException("No user is logged in.");
+        }
+    }
 }

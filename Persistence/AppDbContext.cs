@@ -14,6 +14,9 @@ namespace Persistence
 	{
 		public required DbSet<Activity> Activities { get; set; }
 		public required DbSet<ActivityAttendee> ActivityAttendees { get; set; }
+		public required DbSet<Photo> Photos { get; set; }
+
+
 		protected override void OnModelCreating(ModelBuilder builder)  //강사는 chanining/fluent 방식을 사용했다.
 		{
 			base.OnModelCreating(builder);   // haskey: 기본키 설정, jointable: 경우 2개 이상의 컬럼으로 구성된 복합키 사용
