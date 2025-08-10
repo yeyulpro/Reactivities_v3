@@ -20,12 +20,12 @@ namespace Application.Profiles.Commands
         }
 
         public class Handler( IUserAccessor userAccessor, AppDbContext context, IPhotoService photoService)
-         : IRequestHandler<Command, Result<Photo>>
+         : IRequestHandler<Command, Result<Photo>> // my question"? why result is not photoDto-photoUploadedResult. but db entity Photo?
         {
             public async Task<Result<Photo>> Handle(Command request, CancellationToken cancellationToken)
             {
 
-                var uploadResult = await photoService.UploadPhoto(request.File);
+                var uploadResult = await photoService.UploadPhoto(request.File); // cloudinary upload
                 
                 if (uploadResult == null) return Result<Photo>.Failure("Failed to upload photo", 400);
 

@@ -34,7 +34,6 @@ export default function NavBar() {
                 }}
               >
                 <MenuItemLink to={"/activities"}>Activities</MenuItemLink>
-               
                 <MenuItemLink to={"/Counter"}>Counter</MenuItemLink>
                 <MenuItemLink to={"/errors"}>Test Errors</MenuItemLink>
               </Box>

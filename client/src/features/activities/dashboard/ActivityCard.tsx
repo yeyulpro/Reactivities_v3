@@ -24,7 +24,7 @@ type Props = {
 };
 
 export default function ActivityCard({ activity,  }: Props) {
-    console.log("hey hey hey "+activity.isHost+ " and "+activity.isGoing)
+  
   const label = activity.isHost ? "Your are hosting" : "You are going";
   const color = activity.isHost
     ? "secondary"
@@ -38,7 +38,7 @@ export default function ActivityCard({ activity,  }: Props) {
     <Card elevation={3} sx={{ width: "100%" }}>
       <Box display="flex" alignItems="center" justifyContent="space-between">
         <CardHeader
-          avatar={<Avatar sx={{ height: 80, width: 80 }} />}
+          avatar={<Avatar src={activity.hostImageUrl}  sx={{ height: 80, width: 80 }} alt="Image of Host"/>}
           title={activity.title}
           slotProps={{ title: { fontWeight: "bold", fontSize: 20 } }}
           subheader={
@@ -90,8 +90,8 @@ export default function ActivityCard({ activity,  }: Props) {
           gap={2}
           sx={{ backgroundColor: "grey.200", py: 3, pl: 3 }}
         >
-          {activity.attendees.map((att) => (
-           <AvartarPopover profile={att}     key={att.id}/>
+          {activity.attendees.map((attendee) => (
+           <AvartarPopover key={attendee.id} profile={attendee} />
           ))}
         </Box>
       </CardContent>

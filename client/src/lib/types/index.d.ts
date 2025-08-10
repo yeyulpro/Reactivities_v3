@@ -1,8 +1,22 @@
+// import type { ZodNumberFormat } from "zod";
+// import type { StringValidation } from "zod/v3";
+
 type User={
   id:string,
   displayName:string,
   email:string,
+  imageUrl?:string,
+
+
+}
+type UserProfile={
+  id:string
+  displayName:string;
+  bio?: string
   imageUrl?:string
+  followersCount?:number
+  followingCount?:number
+  following?:boolean
 }
 
 
@@ -22,13 +36,24 @@ type Activity = {
   isHost:boolean;
   hostId:string;
   hostDisplayName:string
+  hostImageUrl?:string
 };
 
-type UserProfile={
-  id:string
-  displayName:string;
-  bio?: string
+type ChatComment={
+  id:string,
+  createdAt: Date,
+  body: string,
+  userId: string,
+  displayName: string
   imageUrl?:string
+
+}
+
+
+
+type Photo ={
+  id:string,
+  url:string
 }
 
 export type CreateActivityDto = Omit<Activity, "id" | "isCancelled">;

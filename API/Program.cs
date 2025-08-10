@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Application.Interfaces;
 using Infrastructure.Security;
 using Infrastructure.Photos;
+using API.SignalR;
 
 
 namespace API
@@ -59,6 +60,7 @@ namespace API
             builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
             builder.Services.AddScoped<IUserAccessor,UserAccessor>();
             builder.Services.AddScoped<IPhotoService, PhotoService>();
+            builder.Services.AddSignalR();
             builder.Services.AddAutoMapper(typeof(AutoMapping).Assembly);
             builder.Services.AddValidatorsFromAssemblyContaining<CreateActivityValidator>();
             builder.Services.AddTransient<ExceptionMiddleware>();
@@ -94,6 +96,7 @@ namespace API
             app.UseAuthorization();
             app.MapControllers();
             app.MapGroup("/api").MapIdentityApi<User>();// url 경로가 /api로 시작하는 요청들을 하나의 그룹으로 묶는것
+            app.MapHub<CommentHub>("/comments");
             using var scope = app.Services.CreateScope();
             var services = scope.ServiceProvider;
 

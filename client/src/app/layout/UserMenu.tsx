@@ -3,11 +3,14 @@ import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { useAccount } from "../../lib/hooks/useAccount";
-import FaceIcon from "@mui/icons-material/Face";
-import { Box } from "@mui/material";
+import { Avatar, Box } from "@mui/material";
+import { Link } from "react-router-dom";
+
+
 
 export default function UserMenu() {
   const { currentUser, logoutUser } = useAccount();
+
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -38,14 +41,19 @@ export default function UserMenu() {
             fontSize: "large",
           }}
         >
-          <FaceIcon />
-          Welcome {currentUser?.displayName}
+          <Avatar
+            alt="current user image"
+            src={currentUser?.imageUrl}
+            sx={{ width: 44, height: 44 }}
+          />
+          Hello {currentUser?.displayName}
         </Box>
       </Button>
 
       <Menu
         id="basic-menu"
         anchorEl={anchorEl}
+        
         open={open}
         onClose={handleClose}
         slotProps={{
@@ -54,7 +62,7 @@ export default function UserMenu() {
           },
         }}
       >
-        <MenuItem onClick={handleClose}>Profile</MenuItem>
+        <MenuItem component={Link} to={`/profiles/${currentUser?.id}`} onClick={handleClose}>Profile</MenuItem>
         <MenuItem onClick={handleClose}>My account</MenuItem>
         <MenuItem onClick={handleLogout}>Logout</MenuItem>
       </Menu>

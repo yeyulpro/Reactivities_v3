@@ -56,6 +56,8 @@ export const useAccount = () => {
       });
       return response.data;
     },
+    enabled: !queryClient.getQueryData(['user'])
+   
     
   });
   return {

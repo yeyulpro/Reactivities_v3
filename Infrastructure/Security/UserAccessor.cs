@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -38,3 +39,9 @@ namespace Infrastructure.Security
         }
     }
 }
+
+
+// var user = await dbContext.Users
+//     .Where(x => x.Id == userId)
+//     .Include(x => x.Photos)
+//     .FirstOrDefaultAsync(); 이것도 같은 결과이다.

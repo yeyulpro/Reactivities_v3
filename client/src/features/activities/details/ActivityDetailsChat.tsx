@@ -1,10 +1,39 @@
-import { Avatar, Box, Card, CardContent, TextField, Typography } from "@mui/material";
+import { Avatar, Box, Card, CardContent, CircularProgress, TextField, Typography } from "@mui/material";
 
-import { Link as RouterLink} from "react-router-dom";
+import { Link as RouterLink, useParams } from "react-router-dom";
+import { useComments } from "../../../lib/hooks/useComment";
+import { timeAgo } from "../../../lib/util/util";
+import { useForm, type FieldValues } from "react-hook-form";
+import { observer } from "mobx-react-lite";
 
-export default function ActivityDetailsChat() {
-  return (
-     <>
+const ActivityDetailsChat= observer(function ActivityDetailsChat() {
+   const { id } = useParams<{ id: string }>();
+const { commentStore } = useComments(id!);
+const {register, handleSubmit, reset, formState:{isSubmitting}}= useForm();
+
+
+
+const addComment = async(data:FieldValues)=>{
+    try{
+        await commentStore.hubConnection?.invoke('SendComment',{
+            activityId:id, 
+            body:data.body
+        });
+        reset()
+
+    }catch(error){
+        console.log(error)
+    }
+}
+
+const handleKeyPress = (event:React.KeyboardEvent<HTMLDivElement>)=>{
+    if(event.key==='Enter' && event.shiftKey){
+        event.preventDefault();
+        handleSubmit(addComment)();
+    }
+}
+    return (
+        <>
             <Box
                 sx={{
                     textAlign: 'center',
@@ -20,34 +49,44 @@ export default function ActivityDetailsChat() {
                     <div>
                         <form>
                             <TextField
+                            {...register('body',{required:true})}
                                 variant="outlined"
                                 fullWidth
                                 multiline
                                 rows={2}
                                 placeholder="Enter your comment (Enter to submit, SHIFT + Enter for new line)"
+                                onKeyDown={handleKeyPress}
+                                slotProps={{input:{endAdornment:isSubmitting?(
+                                    <CircularProgress size={24}/>
+                                ):null
+                            }}}
                             />
                         </form>
                     </div>
 
-                    <Box>
-                        <Box sx={{ display: 'flex', my: 2 }}>
-                            <Avatar src={'/images/user.png'} alt={'user image'} sx={{ mr: 2 }} />
-                            <Box display='flex' flexDirection='column'>
-                                <Box display='flex' alignItems='center' gap={3}>
-                                    <Typography component={RouterLink} to={`/profiles/username`} variant="subtitle1" sx={{ fontWeight: 'bold', textDecoration: 'none' }}>
-                                        Bob
-                                    </Typography>
-                                    <Typography variant="body2" color="textSecondary">
-                                        2 hours ago
-                                    </Typography>
-                                </Box>
+                    <Box sx={{ height: 400, overflow: 'auto' }}>
+                        {commentStore.comments.map(comment => (
+                            <Box key={comment.id} sx={{ display: 'flex', my: 2 }}>
+                                <Avatar src={comment.imageUrl} alt={'user image'} sx={{ mr: 2 }} />
+                                <Box display='flex' flexDirection='column'>
+                                    <Box display='flex' alignItems='center' gap={3}>
+                                        <Typography component={RouterLink} to={`/profiles/${comment.userId}`} variant="subtitle1" sx={{ fontWeight: 'bold', textDecoration: 'none' }}>
+                                            {comment.displayName}
+                                        </Typography>
+                                        <Typography variant="body2" color="textSecondary">
+                                            {timeAgo(comment.createdAt)}
+                                        </Typography>
+                                    </Box>
 
-                                <Typography sx={{ whiteSpace: 'pre-wrap' }}>Comment goes here</Typography>
+                                    <Typography sx={{ whiteSpace: 'pre-wrap' }}>{comment.body}</Typography>
+                                </Box>
                             </Box>
-                        </Box>
+                        ))}
+
                     </Box>
                 </CardContent>
             </Card>
         </>
-  )
-}
+    )
+});
+export default ActivityDetailsChat;
