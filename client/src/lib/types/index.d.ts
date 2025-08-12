@@ -1,6 +1,12 @@
 // import type { ZodNumberFormat } from "zod";
 // import type { StringValidation } from "zod/v3";
 
+type PagedList<T, TCursor>={
+  items: T[],
+  nextCursor: TCursor
+}
+
+
 type User={
   id:string,
   displayName:string,

@@ -4,9 +4,11 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace Domain
 {
+	[Index(nameof(Date))]  //해당 엔티티 클래스(Activity)의 Date 속성에 데이터베이스 인덱스를 생성하라는 표시
 	public class Activity
 	{
 

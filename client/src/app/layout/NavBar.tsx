@@ -17,7 +17,7 @@ export default function NavBar() {
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
-        <AppBar position="static" sx={{ bgcolor: "#E69DB8" }}>
+        <AppBar position="fixed" sx={{ bgcolor: "#E69DB8" }}>
           <Container maxWidth="xl">
             <Toolbar sx={{ justifyContent: "space-between" }}>
               <Box sx={{ display: "flex" }}>

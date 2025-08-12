@@ -22,9 +22,10 @@ namespace API.Controllers
 	{
 
 		[HttpGet]
-		public async Task<ActionResult<List<ActivityDto>>> GetActivities()
+		public async Task<ActionResult<PagedList<ActivityDto, DateTime?>>> GetActivities([FromQuery]ActivityParams activityParams)
+		                                                    //특정 클라이언트가 너무 큰 pageSize를 요청해 서버를 공격하는 것을 막으려고 일부러 API에 pageSize 파라미터를 빼고,서버에서 고정값 또는 내부 정책으로 페이지 크기를 정하는 경우도 있어요.
 		{
-			return await mediator.Send(new GetActivityList.Query());
+			return HandleResult(await mediator.Send(new GetActivityList.Query{Params=activityParams}));
 		}
 
 		[HttpGet("{id}")]
